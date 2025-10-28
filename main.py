@@ -4,6 +4,12 @@ from google import genai
 from google.genai import types
 import sys
 
+from functions.get_files_info import get_files_info
+
+print(get_files_info("calculator", "."))
+# print(get_files_info("calculator", "./calculator/pkg"))
+exit(1)
+
 verbose = False
 user_prompt = ""
 
