@@ -1,4 +1,8 @@
 import os
+from config import MAX_CHARS
+
+def is_valid_directory(working_directory, file_or_dir):
+    pass
 
 def get_files_info(working_directory, directory):
     abs_working_dir = os.path.abspath(working_directory)
@@ -13,3 +17,18 @@ def get_files_info(working_directory, directory):
         size = os.path.getsize(abs_path)
         detailed.append(f" - {content}: file_size={size} bytes, is_dir={is_dir}")
     return f"Result for current directory: \n{"\n".join(detailed)}\n"
+
+def get_file_content(working_directory, file_path):
+    absolute_working_dir = os.path.abspath(working_directory)
+    absolute_dir = os.path.abspath(os.path.join(working_directory, file_path))
+    if not absolute_dir.startswith(absolute_working_dir):
+      return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
+    if not os.path.isfile(absolute_dir):
+        return f'Error: File not found or is not a regular file: "{file_path}"'
+    with open(absolute_dir, 'r') as file:
+        file_content_string = file.read()
+        char_count = len(file_content_string)
+        if char_count > MAX_CHARS:
+            file_content_string = file_content_string[:MAX_CHARS]
+            file_content_string += f' [...FILE "{file_path}" truncated at {MAX_CHARS} characters]'
+        return file_content_string
