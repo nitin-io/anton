@@ -32,3 +32,15 @@ def get_file_content(working_directory, file_path):
             file_content_string = file_content_string[:MAX_CHARS]
             file_content_string += f' [...FILE "{file_path}" truncated at {MAX_CHARS} characters]'
         return file_content_string
+
+def write_file(working_directory, file_path, content):
+    absolute_working_dir = os.path.abspath(working_directory)
+    absolute_dir = os.path.abspath(os.path.join(working_directory, file_path))
+    if not absolute_dir.startswith(absolute_working_dir):
+        return f'Error: Cannot write to "{file_path}" as it is outside the permitted working directory'
+    path = os.path.dirname(absolute_dir)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    with open(absolute_dir, "w") as f:
+        f.write(content)
+    return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
