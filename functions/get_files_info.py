@@ -1,5 +1,6 @@
 import os
 from config import MAX_CHARS
+import subprocess
 
 def is_valid_directory(working_directory, file_or_dir):
     pass
@@ -44,3 +45,24 @@ def write_file(working_directory, file_path, content):
     with open(absolute_dir, "w") as f:
         f.write(content)
     return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
+
+def run_python_file(working_directory, file_path, args=[]):
+    absolute_working_dir = os.path.abspath(working_directory)
+    absolute_dir = os.path.abspath(os.path.join(working_directory, file_path))
+    if not absolute_dir.startswith(absolute_working_dir):
+        return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
+    if not os.path.exists(absolute_dir):
+        return f'Error: File "{file_path}" not found.'
+    if not absolute_dir.endswith(".py"):
+        return f'Error: "{file_path}" is not a Python file.'
+    if len(args) > 0:
+        args.insert(0, "python3")
+        args.insert(1, absolute_dir)
+    else:
+        args = ["python3", absolute_dir]
+    try:
+        print("Command: ", " ".join(args))
+        completed_process = subprocess.run(args=args, timeout=3, capture_output=True)
+        return f"STDOUT: {completed_process.stdout}, STDERR: {completed_process.stderr}"
+    except Exception as e:
+        return f"Error: executing Python file: {e}"
