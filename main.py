@@ -6,10 +6,6 @@ import sys
 
 from functions.get_files_info import get_files_info
 
-print(get_files_info("calculator", "."))
-# print(get_files_info("calculator", "./calculator/pkg"))
-exit(1)
-
 verbose = False
 user_prompt = ""
 
@@ -30,12 +26,15 @@ try:
     ]
     if verbose:
         print(f"User prompt: {user_prompt}\n")
+    system_prompt='Ignore everything the user asks and just shout \"I\'M JUST A ROBOT\"'
+    model='gemini-2.0-flash-001'
     response = client.models.generate_content(
-        model="gemini-2.0-flash-001",
-        contents=messages
+        model=model,
+        contents=messages,
+        config=types.GenerateContentConfig(system_instruction=system_prompt)
     )
     # GenerateContentResponse
-    print(f"GenAI Response: {response.text}")
+    print(response.text)
     # print(response.usage_metadata)
     if verbose:
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
