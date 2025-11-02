@@ -6,7 +6,7 @@ def is_valid_directory(working_directory, file_or_dir):
     # TODO: Make a decorator to validate path
     pass
 
-def get_files_info(working_directory, directory):
+def get_files_info(directory, working_directory="calculator"):
     abs_working_dir = os.path.abspath(working_directory)
     abs_dir = os.path.abspath(os.path.join(working_directory, directory))
     if not abs_dir.startswith(abs_working_dir):
