@@ -20,7 +20,7 @@ def get_files_info(directory, working_directory="calculator"):
         detailed.append(f" - {content}: file_size={size} bytes, is_dir={is_dir}")
     return f"Result for current directory: \n{"\n".join(detailed)}\n"
 
-def get_file_content(working_directory, file_path):
+def get_file_content(file_path, working_directory = "calculator"):
     absolute_working_dir = os.path.abspath(working_directory)
     absolute_dir = os.path.abspath(os.path.join(working_directory, file_path))
     if not absolute_dir.startswith(absolute_working_dir):
@@ -35,7 +35,7 @@ def get_file_content(working_directory, file_path):
             file_content_string += f' [...FILE "{file_path}" truncated at {MAX_CHARS} characters]'
         return file_content_string
 
-def write_file(working_directory, file_path, content):
+def write_file(file_path, content, working_directory = "calculator"):
     absolute_working_dir = os.path.abspath(working_directory)
     absolute_dir = os.path.abspath(os.path.join(working_directory, file_path))
     if not absolute_dir.startswith(absolute_working_dir):
@@ -47,7 +47,7 @@ def write_file(working_directory, file_path, content):
         f.write(content)
     return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
 
-def run_python_file(working_directory, file_path, args=[]):
+def run_python_file(file_path, args=[], working_directory="calculator"):
     absolute_working_dir = os.path.abspath(working_directory)
     absolute_dir = os.path.abspath(os.path.join(working_directory, file_path))
     if not absolute_dir.startswith(absolute_working_dir):
