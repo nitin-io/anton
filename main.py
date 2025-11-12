@@ -8,6 +8,7 @@ from functions.schemas import schema_get_files_info
 from functions.schemas import schema_write_file
 from functions.schemas import schema_run_python_file
 from functions.schemas import schema_get_file_content
+from libs.function_call import call_function
 
 verbose = False
 user_prompt = ""
@@ -58,9 +59,10 @@ try:
     )
     # GenerateContentRespons
     # print(response)
+    print(response.function_calls)
+    result = call_function(response.function_calls[0])
+    print(result)
     print(response.text)
-    for call in response.function_calls:
-        print(f"Calling function: {call.name}({call.args})")
 
     # print(response.usage_metadata)
     if verbose:
